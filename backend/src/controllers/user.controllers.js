@@ -2,7 +2,7 @@ import UserModel from "../models/user.models.js";
 import PostModel from "../models/post.models.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
+import "dotenv/config";
 class UserController {
   //creating user.
   async createUser(req, res) {
@@ -27,9 +27,9 @@ class UserController {
             );
             res.cookie("token", token, {
               httpOnly: true,
-              secure: true, // Set to true in production with HTTPS
-              sameSite: "Lax", // or 'None' if frontend and backend are on different domains
-              maxAge: 30 * 24 * 60 * 60 * 1000,
+              secure: process.env.NODE_ENV === "production", // Use true for HTTPS
+              sameSite: "Lax", // or 'None' for cross-domain
+              maxAge: 30 * 24 * 60 * 60 * 1000, // Cookie expiry time (30 days)
             });
 
             res.json(user);
