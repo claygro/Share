@@ -1,6 +1,6 @@
 import axios from "axios";
 const connection = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: "https://share-backend-3q5p.onrender.com",
   withCredentials: true,
 });
 export default connection;
