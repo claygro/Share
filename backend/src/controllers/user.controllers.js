@@ -28,7 +28,7 @@ class UserController {
             res.cookie("token", token, {
               httpOnly: true,
               secure: process.env.NODE_ENV === "production", // Use true for HTTPS
-              sameSite: "Lax", // or 'None' for cross-domain
+              sameSite: "None", // or 'None' for cross-domain
               maxAge: 30 * 24 * 60 * 60 * 1000, // Cookie expiry time (30 days)
             });
 
