@@ -27,7 +27,7 @@ class UserController {
             );
             res.cookie("token", token, {
               httpOnly: true,
-              secure: false, // Set to true in production with HTTPS
+              secure: true, // Set to true in production with HTTPS
               sameSite: "Lax", // or 'None' if frontend and backend are on different domains
               maxAge: 30 * 24 * 60 * 60 * 1000,
             });
