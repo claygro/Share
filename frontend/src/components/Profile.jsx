@@ -11,20 +11,29 @@ const Profile = () => {
   const [showId, setShowId] = useState(null);
   const navigate = useNavigate();
 
-  // Fetch profile (includes posts)
+  // Fetch profile (includes posts) based on the current user
   async function getProfile() {
     try {
-      const userProfile = await connection.get("/user/profile");
-      setProfileData(userProfile.data.user);
+      const res = await connection.get("/user/currentUser"); // Fetch current user token
+      const token = res.data;
+
+      if (token) {
+        const user = jwtDecode(token); // Decode the token to get user info
+        const userProfile = await connection.get(`/user/profile`); // Fetch profile based on current user
+        setProfileData(userProfile.data.user);
+        setCurrentUserId(user.userid);
+      } else {
+        navigate("/login"); // Redirect if no token (user not logged in)
+      }
     } catch (error) {
       console.error("Error fetching profile", error);
     }
   }
 
-  // Fetch profile on load
+  // Fetch profile on load or when current user changes
   useEffect(() => {
     getProfile();
-  }, []);
+  }, []); // Dependency array is empty, meaning it runs only once when the component mounts
 
   // Handle post submission
   const handlePostSubmit = async (e) => {
@@ -124,7 +133,6 @@ const Profile = () => {
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-white text-xl font-semibold">
                   {profileData.username}
-                  {console.log(profileData.username)}
                 </h3>
                 <div className="relative">
                   <button
