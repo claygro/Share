@@ -77,17 +77,16 @@ class UserController {
     const isPasswordMatch = bcrypt.compare(password, user ? user.password : "");
     if (!user || !isPasswordMatch) {
       res.status(404).json({ message: "Something went wrong." });
-    } else {
-      let token = jwt.sign(
-        { email: email, userid: user._id },
-        process.env.JWT_SECRET_KEY
-      );
-      res.cookie("token", token, {
-        httpOnly: true,
-        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds
-      });
-      res.status(200).json({ message: "login successfully" });
     }
+    let token = jwt.sign(
+      { email: email, userid: user._id },
+      process.env.JWT_SECRET_KEY
+    );
+    res.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds
+    });
+    res.status(200).json({ message: "login successfully" });
   }
   //profile section.
   async getProfile(req, res) {
