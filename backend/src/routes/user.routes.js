@@ -33,7 +33,7 @@ async function isLoggedIn(req, res, next) {
 
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    req.user = data; // Attach decoded token (which includes email/userid)
+    req.user = { userid: data.userid }; // Attach decoded token (which includes email/userid)
     next(); // ✅ Allow request to proceed to controller
   } catch (err) {
     console.error("Error in isLoggedIn middleware:", err);
