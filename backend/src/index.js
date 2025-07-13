@@ -8,6 +8,7 @@ const app = express();
 app.use(
   cors({
     origin: "https://share-frontend-xg3u.onrender.com",
+
     credentials: true,
   })
 );
@@ -15,7 +16,12 @@ app.use(express.json());
 app.use(cookieParser());
 app.use("/user", router);
 app.get("/logout", (req, res) => {
-  res.cookie("token", "");
+  res.cookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "None",
+    path: "/",
+  });
   res.status(200).json({ message: "Logged out" });
 });
 app.listen(8000, async () => {
